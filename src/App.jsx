@@ -1,4 +1,3 @@
-// App.jsx
 import { useEffect, useState, useRef } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
@@ -33,8 +32,21 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // 🌀 Mouse Glow Effect: Follow mouse and center exactly
+  useEffect(() => {
+    const glow = document.getElementById("cursor-glow");
+
+    const handleMouseMove = (e) => {
+      glow.style.left = `${e.clientX}px`;
+      glow.style.top = `${e.clientY}px`;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
-    <div className="flex bg-[#0f172a] text-[#94a2b8] font-sans scroll-smooth px-20 pt-12">
+    <div className="flex bg-[#11172f] text-[#94a2b8] font-sans scroll-smooth px-20 pt-12">
       {/* Sidebar (sticky) */}
       <aside className="hidden md:flex flex-col justify-between w-1/3 max-w-sm px-8 py-16 h-screen sticky top-0 ">
         <div>
@@ -48,11 +60,10 @@ export default function App() {
               <a
                 key={section.id}
                 href={`#${section.id}`}
-                className={`block transition-colors ${
-                  activeSection === section.id
-                    ? "text-white font-semibold border-l-2 border-white pl-2"
-                    : "text-gray-400 hover:text-cyan-400 pl-2"
-                }`}
+                className={`block transition-colors ${activeSection === section.id
+                  ? "text-white font-semibold border-l-2 border-white pl-2"
+                  : "text-gray-400 hover:text-cyan-400 pl-2"
+                  }`}
               >
                 {section.label}
               </a>
@@ -154,8 +165,32 @@ export default function App() {
             </div>
           </div>
         </section>
-
       </main>
+
+      {/* 🔵 Cursor Glow Halo */}
+      <div
+        id="cursor-glow"
+        className="pointer-events-none fixed z-50 rounded-full blur-[160px]"
+        style={{
+          width: "900px",
+          height: "900px",
+          transform: "translate(-50%, -50%)",
+          position: "fixed",
+          opacity: 0.2,
+          background: `
+      radial-gradient(circle,
+        #111d41 0%,
+        #1a2a56 20%,
+        #22346a 40%,
+        #2b3e7d 60%,
+        #11172f 80%,
+        #11172f 100%)
+    `
+        }}
+      ></div>
+
+
+
     </div>
   );
 }
